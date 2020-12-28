@@ -105,7 +105,7 @@ class _DashbaordState extends State<Dashbaord> {
       child: Scaffold(
           appBar: AppbarPage('IBC24 EMP-Portal'),
           drawer: DrawerPage(),
-          bottomNavigationBar: Bottomnavigation(),
+          //bottomNavigationBar: Bottomnavigation(),
           body: tabs[0],
       ),
     );
@@ -120,7 +120,7 @@ class dashbordItem extends StatelessWidget {
           child: GridView.count(
             crossAxisCount: 3,
             children: <Widget>[
-              Items(title:'Attandance\nMgmt',icon:Icons.access_time,warna:Colors.green,route:'/attendance'),
+              Items(title:'Attendance\nMgmt',icon:Icons.access_time,warna:Colors.green,route:'/attendance'),
               Items(title:'PL\nSummary',icon:Icons.grid_off,warna:Colors.orange,route:'/plsummary'),
               Items(title:'IT\nPolicies',icon:Icons.desktop_windows,warna:Colors.yellow,route:'/itpolicies'),
               //Items(title:'CAB\nMgmt',icon:Icons.directions_car,warna:Colors.blue,route:'attendance'),

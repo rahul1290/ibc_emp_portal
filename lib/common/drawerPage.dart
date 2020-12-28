@@ -23,7 +23,7 @@ class _DrawerPageState extends State<DrawerPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Are you sure to logout.'),
+          title: Text('You want to logout?'),
           content: SingleChildScrollView(
 //            child: ListBody(
 //              children: <Widget>[
@@ -83,7 +83,7 @@ class _DrawerPageState extends State<DrawerPage> {
           ),
           ListTile(
             leading: Icon(Icons.access_time,color: Colors.green,),
-            title: Text('Attandance Mgmt'),
+            title: Text('Attendance Mgmt'),
             onTap: (){
               Navigator.pushNamed(context, '/attendance');
             },
