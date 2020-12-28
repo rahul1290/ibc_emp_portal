@@ -105,7 +105,7 @@ class _DashbaordState extends State<Dashbaord> {
       child: Scaffold(
           appBar: AppbarPage('IBC24 EMP-Portal'),
           drawer: DrawerPage(),
-          //bottomNavigationBar: Bottomnavigation(),
+          bottomNavigationBar: Bottomnavigation(),
           body: tabs[0],
       ),
     );
