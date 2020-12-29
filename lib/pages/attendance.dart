@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ibcportal/common/appbarPage.dart';
+import 'package:ibcportal/common/bottomnavigation.dart';
 import 'package:ibcportal/common/drawerPage.dart';
 import 'package:ibcportal/dbhelper.dart';
 import 'dart:convert';
@@ -159,6 +160,7 @@ class _AttendanceState extends State<Attendance> {
     return Scaffold(
       appBar: AppbarPage('ATTENDANCE'),
         drawer: DrawerPage(),
+        bottomNavigationBar: Bottomnavigation(),
         body: loader ? Container(
           child: Center(
             child: Column(
