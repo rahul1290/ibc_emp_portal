@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:ibcportal/dbhelper.dart';
 import 'dart:convert';
@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:ibcportal/common/global.dart' as global;
 import 'package:ibcportal/common/drawerPage.dart';
 import 'package:ibcportal/common/appbarPage.dart';
-import 'package:ibcportal/common/bottomnavigation.dart';
+//import 'package:ibcportal/common/bottomnavigation.dart';
 import 'package:ibcportal/pages/bottomNavigation/Birthday.dart';
 class Dashbaord extends StatefulWidget {
   @override
@@ -22,10 +22,10 @@ class _DashbaordState extends State<Dashbaord> {
   @override
   void initState(){
     super.initState();
-    user_detail();
+    _userDetail();
   }
 
-  @override
+  
   Future<bool> _onWillPop(){
     return showDialog(
       context: context,
@@ -47,7 +47,7 @@ class _DashbaordState extends State<Dashbaord> {
     ) ?? false;
   }
 
-  user_detail() async {
+   _userDetail() async {
       List <dynamic> userdetail = await dbhelper.get(1);
       String url = global.baseUrl+'/Authctrl/userDetail';
       Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
@@ -105,7 +105,7 @@ class _DashbaordState extends State<Dashbaord> {
       child: Scaffold(
           appBar: AppbarPage('IBC24 EMP-Portal'),
           drawer: DrawerPage(),
-          bottomNavigationBar: Bottomnavigation(),
+          //bottomNavigationBar: Bottomnavigation(),
           body: tabs[0],
       ),
     );
@@ -125,7 +125,7 @@ class dashbordItem extends StatelessWidget {
               Items(title:'IT\nPolicies',icon:Icons.desktop_windows,warna:Colors.yellow,route:'/itpolicies'),
               //Items(title:'CAB\nMgmt',icon:Icons.directions_car,warna:Colors.blue,route:'attendance'),
               Items(title:'HR\nPolicies',icon:Icons.desktop_windows,warna:Colors.red,route:'/hrpolicies'),
-              //Items(title:'Broadcast\nOutput',icon:Icons.desktop_windows,warna:Colors.orange,route:'/plsummary'),
+              Items(title:'Broadcast\nOutput',icon:Icons.desktop_windows,warna:Colors.orange,route:'/broadcast'),
             ],
           ),
         );

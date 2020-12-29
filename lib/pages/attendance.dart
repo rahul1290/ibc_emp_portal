@@ -160,7 +160,6 @@ class _AttendanceState extends State<Attendance> {
     return Scaffold(
       appBar: AppbarPage('ATTENDANCE'),
         drawer: DrawerPage(),
-        bottomNavigationBar: Bottomnavigation(),
         body: loader ? Container(
           child: Center(
             child: Column(

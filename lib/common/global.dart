@@ -11,6 +11,7 @@ String appPath = "http://emp2.ibc24.in/kra1/";
 String uname = "";
 String emailId = "";
 String userImage = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT-BwYJuj3yyVST5zpsvuLOLJWk26C9uWSk0vE2HbmTKX38j_Wdw&s';
+List permissions = [];
 String appbarTitle = 'IBC24 EMP-Portal';
 //String month = '12';
 //String year = '2020';

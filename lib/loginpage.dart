@@ -34,7 +34,7 @@ class LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
-  void submit() async {
+  void _submit() async {
     setState(() {
       loader = true;
     });
@@ -44,12 +44,12 @@ class LoginPageState extends State<LoginPage> {
       String url = global.baseUrl+'/Authctrl/login';
       Map<String, String> headers = {"Content-type": "application/json"};
       String json = '{"identity": "'+_data.identity +'", "password": "'+_data.password+'"}';
-      print(json);
       http.Response response = await http.post(url, headers: headers, body: json);
       int statusCode = response.statusCode;
 
       if(statusCode == 200){
           List body = jsonDecode(response.body);
+          global.permissions = body[0]['links'];
           Map<String,dynamic> row = {
             Databasehelper.columnecode : _data.identity,
             Databasehelper.columnkey : body[0]['key'],
@@ -224,7 +224,7 @@ class LoginPageState extends State<LoginPage> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
                                       MaterialButton(
-                                        onPressed: submit,
+                                        onPressed: _submit,
                                         color: Colors.green[600],
                                         splashColor: Colors.red,
                                         child: Text('Login',

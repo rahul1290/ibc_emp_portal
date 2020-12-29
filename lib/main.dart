@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:ibcportal/dbhelper.dart';
-//import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 import 'loginpage.dart';
 import 'dashboard.dart';
@@ -12,6 +12,7 @@ import 'package:ibcportal/pages/policies/hrpolicies.dart';
 import 'package:ibcportal/pages/employee_section/es_dashboard.dart';
 import 'package:ibcportal/pages/employee_section/leaverequest.dart';
 import 'package:ibcportal/pages/plsummary.dart';
+import 'package:ibcportal/pages/broadcast.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/esdashboard' : (context) => Es_dashboard(),
         '/leaverequest' : (context) => LeveRequest(),
         '/plsummary' : (context) => Plsummary(),
+        '/broadcast' : (context) => BroadcastPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

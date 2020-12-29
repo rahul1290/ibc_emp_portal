@@ -17,10 +17,6 @@ class Plsummary extends StatefulWidget {
   _PlsummaryState createState() => _PlsummaryState();
 }
 
-class _AttendanceData {
-  int _department = 0;
-}
-
 class _PlsummaryState extends State<Plsummary> {
   final dbhelper = Databasehelper.instance;
   var jsonTable;
@@ -28,10 +24,9 @@ class _PlsummaryState extends State<Plsummary> {
   String Defaultuser;
   List Users = List();
   List Departments = List();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  _AttendanceData _data = new _AttendanceData();
-
-
+  
   void userDepartment() async{
     List <dynamic> userdetail = await dbhelper.get(1);
     DefaultDept = userdetail[0]['department'];
@@ -134,7 +129,7 @@ class _PlsummaryState extends State<Plsummary> {
           child: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(15.0),
                 child : Column(
                   children: <Widget>[
                     Form(
@@ -203,6 +198,7 @@ class _PlsummaryState extends State<Plsummary> {
                         ],
                       ),
                     ),
+
                     Container(
                       child: tableloader? Container(
                         padding: EdgeInsets.all(70.0),
@@ -214,11 +210,8 @@ class _PlsummaryState extends State<Plsummary> {
                             Text('Loading...',style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold,),),
                           ],
                         ),
-//                            child: Col(
-//                              //child: CircularProgressIndicator(),
-//                            ),
                       ) : Container(
-                        width: MediaQuery. of(context). size. width,
+                          width: MediaQuery. of(context). size. width,
                         //child: Center(
                           child: jsonTable == "" ? Container(
                             padding: EdgeInsets.all(10.0),
@@ -230,10 +223,11 @@ class _PlsummaryState extends State<Plsummary> {
                               decoration: BoxDecoration(border: Border.all(width: 0.5),color: Colors.blue[300]),
                               child: Text(header,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.display1.copyWith(fontWeight: FontWeight.w700, fontSize: 14.0,color: Colors.black87),
+                                style: Theme.of(context).textTheme.headline4.copyWith(fontWeight: FontWeight.w700, fontSize: 14.0,color: Colors.black87),
                               ),
                             );
                           },
+                          
                             tableCellBuilder: (value) {
                               return Container(
                                 padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
@@ -241,12 +235,11 @@ class _PlsummaryState extends State<Plsummary> {
                                 child: Text(
                                   value,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.display1.copyWith(fontSize: 16.0, color: Colors.black),
+                                  style: Theme.of(context).textTheme.headline4.copyWith(fontSize: 16.0, color: Colors.black),
                                 ),
                               );
                             },
                           ),
-                        //),
                       ),
 
                     ),
