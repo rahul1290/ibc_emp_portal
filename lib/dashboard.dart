@@ -10,8 +10,6 @@ import 'dart:convert';
 import 'package:ibcportal/common/global.dart' as global;
 import 'package:ibcportal/common/drawerPage.dart';
 import 'package:ibcportal/common/appbarPage.dart';
-import 'package:ibcportal/common/bottomnavigation.dart';
-import 'package:ibcportal/pages/bottomNavigation/Birthday.dart';
 class Dashbaord extends StatefulWidget {
   @override
   _DashbaordState createState() => _DashbaordState();
@@ -93,11 +91,6 @@ class _DashbaordState extends State<Dashbaord> {
     );
   }
 
-  final tabs = [
-      Center(child: dashbordItem()),
-      Center(child: Birthday()),
-      Center(child: Text('News'))
-  ];
 
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -105,19 +98,9 @@ class _DashbaordState extends State<Dashbaord> {
       child: Scaffold(
           appBar: AppbarPage('IBC24 EMP-Portal'),
           drawer: DrawerPage(),
-          //bottomNavigationBar: Bottomnavigation(),
-          body: tabs[0],
-      ),
-    );
-  }
-}
-
-class dashbordItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-          padding:EdgeInsets.all(9.0),
-          child: GridView.count(
+          body: Container(
+            padding:EdgeInsets.all(9.0),
+            child: GridView.count(
             crossAxisCount: 3,
             children: <Widget>[
               Items(title:'Attendance\nMgmt',icon:Icons.access_time,warna:Colors.green,route:'/attendance'),
@@ -128,10 +111,11 @@ class dashbordItem extends StatelessWidget {
               //Items(title:'Broadcast\nOutput',icon:Icons.desktop_windows,warna:Colors.orange,route:'/plsummary'),
             ],
           ),
-        );
+        ),
+      ),
+    );
   }
 }
-
 
 class Items extends StatelessWidget {
   Items({this.title,this.icon,this.warna,this.route});
