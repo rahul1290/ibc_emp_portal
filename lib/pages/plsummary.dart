@@ -211,7 +211,7 @@ class _PlsummaryState extends State<Plsummary> {
                           ],
                         ),
                       ) : Container(
-                          width: MediaQuery. of(context). size. width,
+                          //width: (MediaQuery. of(context). size. width),
                         //child: Center(
                           child: jsonTable == "" ? Container(
                             padding: EdgeInsets.all(10.0),
@@ -219,7 +219,8 @@ class _PlsummaryState extends State<Plsummary> {
                               child: Text('No record found.',style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold,),),
                             ),
                           ) :JsonTable(jsonTable,tableHeaderBuilder: (String header) {
-                            return Container(padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            return Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                               decoration: BoxDecoration(border: Border.all(width: 0.5),color: Colors.blue[300]),
                               child: Text(header,
                                 textAlign: TextAlign.center,
@@ -230,8 +231,8 @@ class _PlsummaryState extends State<Plsummary> {
                           
                             tableCellBuilder: (value) {
                               return Container(
-                                padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
-                                decoration: BoxDecoration(border: Border.all(width: 0.5, color: Colors.grey.withOpacity(0.5))),
+                                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 3.0),
+                                decoration: BoxDecoration(border: Border.all(width: 0.6, color: Colors.grey.withOpacity(0.5))),
                                 child: Text(
                                   value,
                                   textAlign: TextAlign.center,
