@@ -9,6 +9,8 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:ibcportal/common/global.dart' as global;
 import 'package:intl/intl.dart';
+import 'package:video_player/video_player.dart';
+import 'package:chewie/chewie.dart';
 
 class BroadcastPage extends StatefulWidget {
   @override
@@ -17,6 +19,12 @@ class BroadcastPage extends StatefulWidget {
 
 class _BroadcastPageState extends State<BroadcastPage> {
   final dbhelper = Databasehelper.instance;
+
+  TargetPlatform _platform;
+  VideoPlayerController _videoPlayerController1;
+  VideoPlayerController _videoPlayerController2;
+  ChewieController _chewieController;
+
   TextEditingController _controller;
   String Defaulttime = '13';
   List timeSlot = [{'id':1,'slot':'00:00'},{'id':2,'slot':'00:30'},{'id':3,'slot':'01:00'},{'id':4,'slot':'01:30'},{'id':5,'slot':'02:00'},
@@ -35,7 +43,45 @@ class _BroadcastPageState extends State<BroadcastPage> {
   void initState() {
     super.initState();
     _controller= TextEditingController();
+    initializePlayer();
   }
+
+  @override
+  void dispose() {
+    _videoPlayerController1.dispose();
+    _videoPlayerController2.dispose();
+    _chewieController.dispose();
+    super.dispose();
+  }
+
+
+  Future<void> initializePlayer() async {
+    _videoPlayerController1 = VideoPlayerController.network('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4');
+    await _videoPlayerController1.initialize();
+    _videoPlayerController2 = VideoPlayerController.network('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4');
+    await _videoPlayerController2.initialize();
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController1,
+      autoPlay: true,
+      looping: true,
+      // Try playing around with some of these other options:
+
+      // showControls: false,
+      // materialProgressColors: ChewieProgressColors(
+      //   playedColor: Colors.red,
+      //   handleColor: Colors.blue,
+      //   backgroundColor: Colors.grey,
+      //   bufferedColor: Colors.lightGreen,
+      // ),
+      // placeholder: Container(
+      //   color: Colors.grey,
+      // ),
+      // autoInitialize: true,
+    );
+    setState(() {});
+  }
+
+
 
   void _fetchvideo() async{
     List selectedDate = _controller.text.split('/');
@@ -65,6 +111,7 @@ class _BroadcastPageState extends State<BroadcastPage> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -137,6 +184,34 @@ class _BroadcastPageState extends State<BroadcastPage> {
                   fontSize: 20.0,
                 ),),
             ),
+
+
+
+
+
+        Expanded(
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: _chewieController != null && _chewieController.videoPlayerController.value.initialized
+                        ? Chewie(
+                      controller: _chewieController,
+                    )
+                        : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        CircularProgressIndicator(),
+                        SizedBox(height: 20),
+                        Text('Loading'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+        )
+
           ],
         ),
       ),
