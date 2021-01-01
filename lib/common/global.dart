@@ -4,9 +4,10 @@ import 'package:intl/intl.dart';
 //var dDay = new DateTime.utc(1944, 6, 6);
 //print('dDay'+ dDay);
 
-String baseUrl = "http://emp2.ibc24.in/kra1/api";
-String appPath = "http://emp2.ibc24.in/kra1/";
-//String baseUrl = "http://192.168.25.184:82/off/api";
+//String baseUrl = "http://emp2.ibc24.in/kra/api";
+//String appPath = "http://emp2.ibc24.in/kra/";
+String baseUrl = "http://192.168.25.184:82/off/api";
+String appPath = "http://192.168.25.184:82/off/";
 //String baseUrl = "http://192.168.25.237/kra/api";
 String uname = "";
 String emailId = "";

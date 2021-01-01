@@ -125,7 +125,7 @@ class dashbordItem extends StatelessWidget {
               Items(title:'IT\nPolicies',icon:Icons.desktop_windows,warna:Colors.yellow,route:'/itpolicies'),
               //Items(title:'CAB\nMgmt',icon:Icons.directions_car,warna:Colors.blue,route:'attendance'),
               Items(title:'HR\nPolicies',icon:Icons.desktop_windows,warna:Colors.red,route:'/hrpolicies'),
-              Items(title:'Broadcast\nOutput',icon:Icons.desktop_windows,warna:Colors.orange,route:'/broadcast'),
+              //Items(title:'Broadcast\nOutput\ncomming soon',icon:Icons.desktop_windows,warna:Colors.orange,route:''),
             ],
           ),
         );

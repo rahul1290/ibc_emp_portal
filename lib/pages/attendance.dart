@@ -118,11 +118,13 @@ class _AttendanceState extends State<Attendance> {
     String json = '{ }';
     http.Response response = await http.post(url,headers: headers,body: json);
     int statusCode = response.statusCode;
-    setState(() {
-      jsonTable = jsonDecode(response.body);
-      loader = false;
-      tableloader = false;
-    });
+    if(statusCode == 200) {
+      setState(() {
+        jsonTable = jsonDecode(response.body);
+        loader = false;
+        tableloader = false;
+      });
+    }
   }
 
   void getMonthYear() async {
@@ -132,8 +134,10 @@ class _AttendanceState extends State<Attendance> {
     http.Response response = await http.get(url,headers: headers);
     List body = jsonDecode(response.body);
     setState(() {
-      Defaultmonth = body[0]['month'];
+      Defaultmonth = '01';
+      //Defaultmonth = body[0]['month'];
       Defaultyear = body[0]['year'];
+      print(Defaultmonth);
     });
   }
 
@@ -152,8 +156,6 @@ class _AttendanceState extends State<Attendance> {
     userAttendance();
     userDepartment();
     userLists();
-
-
   }
 
   Widget build(BuildContext context) {

@@ -28,55 +28,56 @@ class _BroadcastPageState extends State<BroadcastPage> {
   TextEditingController _controller;
   String Defaulttime = '13';
   List timeSlot = [{'id':1,'slot':'00:00'},{'id':2,'slot':'00:30'},{'id':3,'slot':'01:00'},{'id':4,'slot':'01:30'},{'id':5,'slot':'02:00'},
-                    {'id':6,'slot':'02:30'},{'id':7,'slot':'03:00'},{'id':8,'slot':'03:30'},{'id':9,'slot':'04:00'},{'id':10,'slot':'04:30'},
-                    {'id':11,'slot':'05:00'},{'id':12,'slot':'05:30'},{'id':13,'slot':'06:30'},{'id':14,'slot':'07:00'},{'id':15,'slot':'07:30'},
-                    {'id':16,'slot':'08:00'},{'id':17,'slot':'08:30'},{'id':18,'slot':'09:00'},{'id':19,'slot':'09:30'},{'id':20,'slot':'10:00'},
-                    {'id':21,'slot':'10:30'},{'id':22,'slot':'11:00'},{'id':23,'slot':'11:30'},{'id':24,'slot':'12:00'},{'id':25,'slot':'12:30'},
-                    {'id':26,'slot':'13:00'},{'id':27,'slot':'13:30'},{'id':28,'slot':'14:00'},{'id':29,'slot':'14:30'},{'id':30,'slot':'15:00'},
-                    {'id':31,'slot':'15:30'},{'id':32,'slot':'16:00'},{'id':33,'slot':'16:30'},{'id':34,'slot':'17:00'},{'id':35,'slot':'17:30'},
-                    {'id':36,'slot':'18:00'},{'id':37,'slot':'18:30'},{'id':38,'slot':'19:00'},{'id':39,'slot':'19:30'},{'id':40,'slot':'20:00'},
-                    {'id':41,'slot':'20:30'},{'id':42,'slot':'21:00'},{'id':43,'slot':'21:30'},{'id':44,'slot':'22:00'},{'id':45,'slot':'22:30'},
-                    {'id':46,'slot':'23:00'},{'id':47,'slot':'23:30'},{'id':48,'slot':'00:00'}];
+    {'id':6,'slot':'02:30'},{'id':7,'slot':'03:00'},{'id':8,'slot':'03:30'},{'id':9,'slot':'04:00'},{'id':10,'slot':'04:30'},
+    {'id':11,'slot':'05:00'},{'id':12,'slot':'05:30'},{'id':13,'slot':'06:30'},{'id':14,'slot':'07:00'},{'id':15,'slot':'07:30'},
+    {'id':16,'slot':'08:00'},{'id':17,'slot':'08:30'},{'id':18,'slot':'09:00'},{'id':19,'slot':'09:30'},{'id':20,'slot':'10:00'},
+    {'id':21,'slot':'10:30'},{'id':22,'slot':'11:00'},{'id':23,'slot':'11:30'},{'id':24,'slot':'12:00'},{'id':25,'slot':'12:30'},
+    {'id':26,'slot':'13:00'},{'id':27,'slot':'13:30'},{'id':28,'slot':'14:00'},{'id':29,'slot':'14:30'},{'id':30,'slot':'15:00'},
+    {'id':31,'slot':'15:30'},{'id':32,'slot':'16:00'},{'id':33,'slot':'16:30'},{'id':34,'slot':'17:00'},{'id':35,'slot':'17:30'},
+    {'id':36,'slot':'18:00'},{'id':37,'slot':'18:30'},{'id':38,'slot':'19:00'},{'id':39,'slot':'19:30'},{'id':40,'slot':'20:00'},
+    {'id':41,'slot':'20:30'},{'id':42,'slot':'21:00'},{'id':43,'slot':'21:30'},{'id':44,'slot':'22:00'},{'id':45,'slot':'22:30'},
+    {'id':46,'slot':'23:00'},{'id':47,'slot':'23:30'},{'id':48,'slot':'00:00'}];
 
 
   @override
   void initState() {
     super.initState();
     _controller= TextEditingController();
-    initializePlayer();
+    initializePlayer('');
   }
 
   @override
   void dispose() {
     _videoPlayerController1.dispose();
-    _videoPlayerController2.dispose();
     _chewieController.dispose();
     super.dispose();
   }
 
 
-  Future<void> initializePlayer() async {
-    _videoPlayerController1 = VideoPlayerController.network('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4');
+  Future<void> initializePlayer(String path) async {
+    //_videoPlayerController1 = VideoPlayerController.network('http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4');
+    //_videoPlayerController1 = VideoPlayerController.network('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4');
+    _videoPlayerController1 = VideoPlayerController.network('https://vod.ibc24.in/mp4/2020/12/30MinMcr_2020-12-29-27535-IST.mp4');
+    //_videoPlayerController1 = VideoPlayerController.network(path);
     await _videoPlayerController1.initialize();
-    _videoPlayerController2 = VideoPlayerController.network('https://assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4');
-    await _videoPlayerController2.initialize();
+
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController1,
-      autoPlay: true,
+      aspectRatio: 16/9,
+      autoPlay: false,
       looping: true,
       // Try playing around with some of these other options:
-
-      // showControls: false,
-      // materialProgressColors: ChewieProgressColors(
-      //   playedColor: Colors.red,
-      //   handleColor: Colors.blue,
-      //   backgroundColor: Colors.grey,
-      //   bufferedColor: Colors.lightGreen,
-      // ),
-      // placeholder: Container(
-      //   color: Colors.grey,
-      // ),
-      // autoInitialize: true,
+      showControls: true,
+      materialProgressColors: ChewieProgressColors(
+        playedColor: Colors.red,
+        handleColor: Colors.blue,
+        backgroundColor: Colors.transparent,
+        bufferedColor: Colors.lightGreen,
+      ),
+      placeholder: Container(
+        color: Colors.transparent,
+      ),
+      autoInitialize: false,
     );
     setState(() {});
   }
@@ -91,15 +92,15 @@ class _BroadcastPageState extends State<BroadcastPage> {
     List <dynamic> Userdetail = await dbhelper.get(1);
     String url = global.baseUrl+"/Broadcast";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
-    String json = '{"date": "'+_selectedDate+'", "time": "'+ slot +'"}';
+    String json = '{"date": "'+ _selectedDate +'", "time": "'+ slot +'"}';
     http.Response response = await http.post(url,headers: headers,body: json);
     int statusCode = response.statusCode;
-    setState(() {
-      if(statusCode == 200) {
-        print(jsonDecode(response.body));
-      } else {
-      }
-    });
+    if(statusCode == 200) {
+      List body = jsonDecode(response.body);
+      print('https://vod.ibc24.in/mp4/'+body[0]['file_name']);
+      initializePlayer('https://vod.ibc24.in/mp4/'+body[0]['file_name']);
+    }
+
   }
 
   @override
@@ -113,17 +114,17 @@ class _BroadcastPageState extends State<BroadcastPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text('Date'),
-
-                RaisedButton(
-                  onPressed: (){
-                    showDatePicker(
+            TextFormField(
+                controller: _controller,
+                readOnly: true,
+                decoration: InputDecoration(
+                  //icon: Icon(Icons.vpn_key,color:Colors.grey,),
+                  suffixIcon: GestureDetector(
+                    onTap: (){
+                      showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(2019, 1),
+                        firstDate: DateTime(2008, 1),
                         lastDate: DateTime(2021,12),
 //                        builder: (BuildContext context, Widget picker){
 //                          return Theme(
@@ -141,37 +142,51 @@ class _BroadcastPageState extends State<BroadcastPage> {
 //                          );
 //                        }
 
-                    ).then((selectedDate) {
-                      if(selectedDate!=null){
-                        final DateTime now = selectedDate;
-                        final DateFormat formatter = DateFormat('dd/MM/yyyy');
-                        final String formatted = formatter.format(now);
-                        _controller.text = formatted;
-                      }
+                      ).then((selectedDate) {
+                        if(selectedDate!=null){
+                          final DateTime now = selectedDate;
+                          final DateFormat formatter = DateFormat('dd/MM/yyyy');
+                          final String formatted = formatter.format(now);
+                          _controller.text = formatted;
+                        }
+                      });
+
+                    },
+                    child: Icon(Icons.calendar_today),
+                  ),
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                  labelText: 'Date',
+                ),
+                cursorColor:Colors.black,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please select date';
+                  }
+                  return null;
+                },
+            ),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Slot'),
+                DropdownButton(
+                  items: timeSlot.map((item){
+                    return DropdownMenuItem(
+                      child: Text(item['slot']),
+                      value: item['id'].toString(),
+                    );
+                  }).toList(),
+                  onChanged: (newVal) {
+                    setState(() {
+                      Defaulttime = newVal;
                     });
                   },
-                  child: Text("Select Date"),
-                ),
+                  value: Defaulttime,
+                )
               ],
-            ),
 
-            TextField(
-              controller: _controller,
-            ),
-
-            DropdownButton(
-              items: timeSlot.map((item){
-                return DropdownMenuItem(
-                  child: Text(item['slot']),
-                  value: item['id'].toString(),
-                );
-              }).toList(),
-              onChanged: (newVal) {
-                setState(() {
-                  Defaulttime = newVal;
-                });
-              },
-              value: Defaulttime,
             ),
 
             MaterialButton(
@@ -189,28 +204,28 @@ class _BroadcastPageState extends State<BroadcastPage> {
 
 
 
-        Expanded(
-            child: Column(
-              children: <Widget>[
-                Expanded(
-                  child: Center(
-                    child: _chewieController != null && _chewieController.videoPlayerController.value.initialized
-                        ? Chewie(
-                      controller: _chewieController,
-                    )
-                        : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 20),
-                        Text('Loading'),
-                      ],
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                      child: _chewieController != null && _chewieController.videoPlayerController.value.initialized
+                          ? Chewie(
+                        controller: _chewieController,
+                      )
+                          : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          CircularProgressIndicator(),
+                          SizedBox(height: 20),
+                          Text('Select date and slot and try again.'),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-        )
+                ],
+              ),
+            )
 
           ],
         ),
