@@ -134,10 +134,9 @@ class _AttendanceState extends State<Attendance> {
     http.Response response = await http.get(url,headers: headers);
     List body = jsonDecode(response.body);
     setState(() {
-      Defaultmonth = '01';
-      //Defaultmonth = body[0]['month'];
-      Defaultyear = body[0]['year'];
-      print(Defaultmonth);
+      Defaultmonth = body[0]['month'].toString();
+      Defaultyear = body[0]['year'].toString();
+      print(Defaultyear);
     });
   }
 

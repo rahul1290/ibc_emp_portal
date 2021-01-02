@@ -9,10 +9,6 @@
 .history
 .svn/
 .idea/
-android
-build
-ios
-test
 
 # IntelliJ related
 *.iml
