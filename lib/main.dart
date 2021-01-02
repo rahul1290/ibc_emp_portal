@@ -11,12 +11,12 @@ import 'dart:io';
 import 'loginpage.dart';
 import 'dashboard.dart';
 import 'package:ibcportal/common/global.dart' as global;
-import 'package:ibcportal/pages/attendance.dart';
+import 'package:ibcportal/pages/employee_section/attendance.dart';
 import 'package:ibcportal/pages/policies/itpolicies.dart';
 import 'package:ibcportal/pages/policies/hrpolicies.dart';
 import 'package:ibcportal/pages/employee_section/es_dashboard.dart';
 import 'package:ibcportal/pages/employee_section/leaverequest.dart';
-import 'package:ibcportal/pages/plsummary.dart';
+import 'package:ibcportal/pages/employee_section/plsummary.dart';
 import 'package:ibcportal/pages/broadcast.dart';
 
 void main() => runApp(MyApp());

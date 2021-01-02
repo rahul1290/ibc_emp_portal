@@ -160,7 +160,7 @@ class _AttendanceState extends State<Attendance> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppbarPage('ATTENDANCE'),
-        drawer: DrawerPage(),
+        //drawer: DrawerPage(),
         body: loader ? Container(
           child: Center(
             child: Column(
