@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:ibcportal/dbhelper.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
+import 'package:ibcportal/pages/employee_section/offdayduty_request.dart';
 import 'package:launch_review/launch_review.dart';
 
 import 'dart:io';
@@ -17,6 +18,7 @@ import 'package:ibcportal/pages/policies/hrpolicies.dart';
 import 'package:ibcportal/pages/employee_section/es_dashboard.dart';
 import 'package:ibcportal/pages/employee_section/leaverequest.dart';
 import 'package:ibcportal/pages/employee_section/plsummary.dart';
+import 'package:ibcportal/pages/employee_section/halfday_request.dart';
 import 'package:ibcportal/pages/broadcast.dart';
 
 void main() => runApp(MyApp());
@@ -41,8 +43,11 @@ class MyApp extends StatelessWidget {
         '/itpolicies' : (context) =>Itpolicies(),
         '/hrpolicies' : (context) => Hrpolicies(),
         '/esdashboard' : (context) => Es_dashboard(),
+
         '/leaverequest' : (context) => LeveRequest(),
         '/plsummary' : (context) => Plsummary(),
+        '/halfdayrequest' : (context) => HalfDayRequest(),
+        '/offdayduty_request' : (context) => OffdayDutyRequest(),
         '/broadcast' : (context) => BroadcastPage(),
       },
       theme: ThemeData(

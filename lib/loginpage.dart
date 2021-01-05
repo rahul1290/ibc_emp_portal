@@ -42,10 +42,8 @@ class LoginPageState extends State<LoginPage> {
       _formKey.currentState.save(); // Save our form now.
 
       String url = global.baseUrl+'/Authctrl/login';
-      print(url);
       Map<String, String> headers = {"Content-type": "application/json"};
       String json = '{"identity": "'+_data.identity +'", "password": "'+_data.password+'"}';
-      print(json);
       http.Response response = await http.post(url, headers: headers, body: json);
       int statusCode = response.statusCode;
       if(statusCode == 200){

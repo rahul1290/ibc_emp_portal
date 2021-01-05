@@ -120,7 +120,6 @@ class dashbordItem extends StatelessWidget {
             crossAxisCount: 3,
             children: <Widget>[
               Items(title:'Emp Section',icon:Icons.person,warna:Colors.blueGrey,route:'/esdashboard'),
-              Items(title:'PL\nSummary',icon:Icons.grid_off,warna:Colors.orange,route:'/plsummary'),
               Items(title:'IT\nPolicies',icon:Icons.desktop_windows,warna:Colors.yellow,route:'/itpolicies'),
               //Items(title:'CAB\nMgmt',icon:Icons.directions_car,warna:Colors.blue,route:'attendance'),
               Items(title:'HR\nPolicies',icon:Icons.desktop_windows,warna:Colors.red,route:'/hrpolicies'),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ibcportal/common/appbarPage.dart';
 import 'package:ibcportal/common/drawerPage.dart';
-//import 'package:ibcportal/common/global.dart' as global;
-//import 'package:empportal/common/drawerPage.dart';
-//import 'package:multilevel_drawer/multilevel_drawer.dart';
 
 class Es_dashboard extends StatefulWidget {
   @override
@@ -22,11 +19,15 @@ class _Es_dashboardState extends State<Es_dashboard> {
             crossAxisCount: 3,
             children: <Widget>[
               Items(title: 'Attendance\nMgmt',icon: Icons.how_to_reg,warna: Colors.green,route: '/attendance'),
-              Items(title: 'Leave\nrequests',icon: Icons.text_snippet,warna: Colors.blue,route: '/leaverequest'),
-              Items(title: 'HF day\nleave request',icon: Icons.desktop_windows,warna: Colors.yellow,route: '/itpolicies'),
-              Items(title: 'OFF day\nduty form',icon: Icons.directions_car,warna: Colors.blue,route: 'attendance'),
-              Items(title: 'NH/FH day\nduty form',icon: Icons.desktop_windows,warna: Colors.red,route: '/hrpolicies'),
-              Items(title: 'PL summary\nreport',icon: Icons.desktop_windows,warna: Colors.orange,route: 'attendance'),
+              Items(title:'PL\nSummary',icon:Icons.grid_off,warna:Colors.orange,route:'/plsummary'),
+              Items(title: 'Leave\nRequest',icon: Icons.text_snippet,warna: Colors.blue,route: '/leaverequest'),
+              Items(title: 'Half day\nLeave',icon: Icons.desktop_windows,warna: Colors.yellow,route: '/halfdayrequest'),
+              Items(title: 'OFF day\nDuty',icon: Icons.directions_car,warna: Colors.blue,route: '/offdayduty_request'),
+              Items(title: 'Tour\nRequest',icon: Icons.directions_car,warna: Colors.blue,route: 'attendance'),
+              Items(title: 'Cancel\nRequest',icon: Icons.report,warna: Colors.red,route: 'attendance'),
+              Items(title: 'NH/FH\nDuty',icon: Icons.desktop_windows,warna: Colors.red,route: '/hrpolicies'),
+              Items(title: 'NH/FH\nAvail',icon: Icons.desktop_windows,warna: Colors.red,route: '/hrpolicies'),
+              Items(title: 'All\nReport',icon: Icons.timeline,warna: Colors.orange,route: '/hrpolicies'),
             ],
           ),
         )
