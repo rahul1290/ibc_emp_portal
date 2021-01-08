@@ -48,18 +48,17 @@ class _DashbaordState extends State<Dashbaord> {
 
    _userDetail() async {
       List <dynamic> userdetail = await dbhelper.get(1);
-      String url = global.baseUrl+'/Authctrl/userDetail';
+      String url = global.baseUrl+'/user-detail';
       Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
-      String json = '{"identity": "'+userdetail[0]['ecode']+'"}';
-      http.Response response = await http.post(url, headers: headers, body: json);
+      http.Response response = await http.get(url, headers: headers);
       int statusCode = response.statusCode;
-
       if(statusCode == 200){
         List body = jsonDecode(response.body);
         global.uname = body[0]['name'];
         global.emailId = body[0]['company_mailid'];
         global.userImage = 'https://employee.ibc24.in/OLAppraisal/EmpImage/' + body[0]['image'];
     } else {
+        print('else called');
         _showMyDialog();
       }
   }

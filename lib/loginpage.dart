@@ -41,18 +41,18 @@ class LoginPageState extends State<LoginPage> {
     if (this._formKey.currentState.validate()) {
       _formKey.currentState.save(); // Save our form now.
 
-      String url = global.baseUrl+'/Authctrl/login';
+      String url = global.baseUrl+'/login';
       Map<String, String> headers = {"Content-type": "application/json"};
       String json = '{"identity": "'+_data.identity +'", "password": "'+_data.password+'"}';
       http.Response response = await http.post(url, headers: headers, body: json);
       int statusCode = response.statusCode;
       if(statusCode == 200){
           List body = jsonDecode(response.body);
-          global.permissions = body[0]['links'];
+          //global.permissions = body[0]['links'];
           Map<String,dynamic> row = {
             Databasehelper.columnecode : _data.identity,
             Databasehelper.columnkey : body[0]['key'],
-            Databasehelper.columndepartment : body[0]['department_id'],
+            Databasehelper.columndepartment : body[0]['Dept'],
             Databasehelper.columnversion : '1.0'
           };
           await dbhelper.insert(row);

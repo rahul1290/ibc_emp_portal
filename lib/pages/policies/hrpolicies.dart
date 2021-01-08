@@ -23,7 +23,7 @@ class _HrpoliciesState extends State<Hrpolicies> {
       loader = true;
     });
     List <dynamic> userdetail = await dbhelper.get(1);
-    String url = global.baseUrl + "/Policies_ctrl/hr_policies";
+    String url = global.baseUrl + "/hr-policies";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
@@ -39,9 +39,9 @@ class _HrpoliciesState extends State<Hrpolicies> {
     }
   }
 
-  _launchURL(file) async {
-    print(file);
-    final url = global.appPath +'/policies/'+file;
+  _launchURL(file,url) async {
+    // print(file);
+    // final url = global.appPath +'/policies/'+file;
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -83,7 +83,7 @@ class _HrpoliciesState extends State<Hrpolicies> {
                 trailing: Icon(Icons.file_download),
                 title: Text(Hrpolicies[index]['title']),
                 subtitle: Text(Hrpolicies[index]['title'].toLowerCase()),
-                onTap: () => _launchURL(Hrpolicies[index]['file_name']),
+                onTap: () => _launchURL(Hrpolicies[index]['file_name'],Hrpolicies[index]['url']),
               ),
             );
           },

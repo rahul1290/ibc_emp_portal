@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -7,28 +8,51 @@ import 'package:ibcportal/common/global.dart' as global;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
-class HalfDayRequest extends StatefulWidget {
+class NhfhAvail extends StatefulWidget {
   @override
-  _HalfDayRequestState createState() => _HalfDayRequestState();
+  _NhfhAvailState createState() => _NhfhAvailState();
 }
 
-class _HalfDayRequestState extends State<HalfDayRequest> {
+class _NhfhAvailState extends State<NhfhAvail> {
   final dbhelper = Databasehelper.instance;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool loader = false;
-  String leaveFrom;
-  String ReasonLeave;
-  TextEditingController _leaveFrom;
-
+  String date;
+  String requirement;
+  String dropdownValue;
+  TextEditingController _requirement;
+  bool _btnStatus = false;
+  String punchTime = '';
+  // List _nhfh;
+  List _nhfh = [{"name": "26/01/2020 (Republic Day)","id": "26/01/2020"},
+    {"name": "02/10/2020 (Gandhi Jayanti)","id": "02/10/2020"},
+    {"name": "25/10/2020 (Vijayadashmi)","id": "25/10/2020"},
+    {"name": "14/11/2020 (Diwali)","id": "14/11/2020"},
+    {"name": "15/11/2020 (Govardhan Puja)","id": "15/11/2020"}];
 
   @override
   void initState() {
     super.initState();
-    _leaveFrom = TextEditingController();
+    // _nhfhList();
+    _requirement = TextEditingController();
   }
 
+  void _nhfhList() async {
+    print('fucntion called');
+    List <dynamic> userdetail = await dbhelper.get(1);
+    String url = global.baseUrl+"nhfhs";
+    print(url);
+    Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
+    http.Response response = await http.get(url, headers: headers);
+    int statusCode = response.statusCode;
+    if(statusCode == 200){
+      _nhfh = jsonDecode(response.body);
+    } else if(statusCode == 500){
 
-    Future<void> _successDialog() async {
+    }
+  }
+
+  Future<void> _successDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -47,8 +71,6 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
               color: Colors.greenAccent,
               child: Text('Ok'),
               onPressed: () => {
-                //_formkey.currentState.reset(),
-                //Navigator.popAndPushNamed(context, '/esdashboard')
                 Navigator.pop(context),
                 Navigator.pop(context)
               },
@@ -79,8 +101,6 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
               color: Colors.redAccent,
               child: Text('Ok'),
               onPressed: () => {
-                //_formkey.currentState.reset(),
-                //Navigator.popAndPushNamed(context, '/esdashboard')
                 Navigator.pop(context),
               },
             ),
@@ -123,17 +143,17 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
   void _formSubmit() async {
     final FormState form = _formkey.currentState;
     form.save();
-
     List <dynamic> userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"user-half-day-request";
+    String url = global.baseUrl+"user-nhfh-avail";
+    print(url);
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
 
-    String json = '{"date":"'+ leaveFrom +'","reason":"'+ ReasonLeave +'"}';
+    String json = '{"date":"'+ dropdownValue +'","reason":"'+ requirement +'"}';
     http.Response response = await http.post(url, headers: headers, body: json);
-    int statusCode = response.statusCode;
 
+    int statusCode = response.statusCode;
     if(statusCode == 200){
-      setState(() {
+      setState((){
         loader = true;
       });
       _successDialog();
@@ -144,63 +164,10 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
     }
   }
 
-  Widget _buildLeaveFrom(){
-    return TextFormField(
-      controller: _leaveFrom,
-      readOnly: true,
-      decoration: InputDecoration(
-          labelText: 'Half Day Leave Date',
-          suffixIcon: GestureDetector(
-            onTap: ()=>{
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2020, 11),
-                lastDate: DateTime(2021,12),
-              ).then((selectedDate) {
-                if(selectedDate!=null){
-                  final DateTime now = selectedDate;
-                  final DateFormat formatter = DateFormat('dd/MM/yyyy');
-                  final String formatted = formatter.format(now);
-                  _leaveFrom.text = formatted;
-                }
-              })
-            },
-            child: Icon(Icons.calendar_today),
-          )),
-      onSaved: (String value){
-        leaveFrom = value;
-      },
-      validator: (String value){
-        if(value.isEmpty){
-          return 'Select date';
-        }
-      },
-    );
-  }
-
-
-  Widget _buildReason(){
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Reason for Half Day',
-      ),
-      keyboardType: TextInputType.multiline,
-      onSaved: (String value){
-        ReasonLeave = value;
-      },
-      validator: (String value){
-        if(value.isEmpty){
-          return 'Give reason for Half day';
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarPage('Half Day Leave'),
+        appBar: AppbarPage('Nh / Fh Avail'),
         body: loader ? Container(
           child: Center(
             child: Column(
@@ -256,7 +223,7 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
                     Container(
                       child: Row(
                         children: <Widget>[
-                          Text('Half Day Leave',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[900]),),
+                          Text('Nh/Fh Duty',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[900]),),
                         ],
                       ),
                     ),
@@ -275,14 +242,46 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(height: 10),
-                          _buildLeaveFrom(),
-                          _buildReason(),
-                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Date:'),
+                              DropdownButton(
+                                items: _nhfh.map((item){
+                                  return DropdownMenuItem(
+                                    child: Text(item['name']),
+                                    value: item['id'].toString(),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    dropdownValue = newVal;
+                                  });
+                                },
+                                value: dropdownValue ?? null,
+                              )
+                            ],
+                          ),
+                          TextFormField(
+                            controller: _requirement,
+                            decoration: InputDecoration(
+                              labelText: 'Reason',
+                            ),
+                            onSaved: (String value){
+                              requirement = value;
+                            },
+                            validator: (String value){
+                              if(value.isEmpty){
+                                return 'Give Reason';
+                              }
+                            },
+                          ),
+                          SizedBox(height: 30),
                           RaisedButton(
                               color: Colors.lightGreen,
                               splashColor: Colors.red,
-                              child: Text('Submit',style: TextStyle(color: Colors.white, fontSize: 16),),
-                              onPressed: (){
+                              child: Text('Send',style: TextStyle(color: Colors.white, fontSize: 16),),
+                              onPressed:(){
                                 if(_formkey.currentState.validate()){
                                   _formSubmit();
                                 }

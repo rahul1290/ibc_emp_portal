@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -32,7 +34,9 @@ class _AttendanceState extends State<Attendance> {
   String Defaultmonth;
   String Defaultyear;
   List Users = List();
-  List Departments = List();
+  List Departments = [
+    {'id':1,'dept_name':'IT'},
+    ];
   List Month = [{'id':1,'name': 'Jan'},
                 {'id':2,'name': 'Feb'},
                 {'id':3,'name': 'Mar'},
@@ -67,10 +71,11 @@ class _AttendanceState extends State<Attendance> {
   void userDepartment() async{
     List <dynamic> userdetail = await dbhelper.get(1);
     DefaultDept = userdetail[0]['department'];
-    String url = global.baseUrl+"/Authctrl/user_department";
+    String url = global.baseUrl+"/user-department";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
+    print(statusCode);
     String body = response.body;
     setState(() {
       Departments = jsonDecode(response.body);
@@ -80,7 +85,7 @@ class _AttendanceState extends State<Attendance> {
   void userLists() async{
     List <dynamic> userdetail = await dbhelper.get(1);
     Defaultuser = userdetail[0]['ecode'];
-    String url = global.baseUrl+"/Authctrl/user_list";
+    String url = global.baseUrl+"/user-supervised";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
@@ -113,10 +118,9 @@ class _AttendanceState extends State<Attendance> {
 
   void userAttendance() async {
     List <dynamic> Userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"/Authctrl/attendance";
+    String url = global.baseUrl+"/user-attendance";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
-    String json = '{ }';
-    http.Response response = await http.post(url,headers: headers,body: json);
+    http.Response response = await http.get(url,headers: headers);
     int statusCode = response.statusCode;
     if(statusCode == 200) {
       setState(() {
@@ -129,7 +133,7 @@ class _AttendanceState extends State<Attendance> {
 
   void getMonthYear() async {
     List <dynamic> Userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"/Authctrl/getMonthYear";
+    String url = global.baseUrl+"/month-year";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
     http.Response response = await http.get(url,headers: headers);
     List body = jsonDecode(response.body);

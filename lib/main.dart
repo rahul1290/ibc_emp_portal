@@ -19,7 +19,10 @@ import 'package:ibcportal/pages/employee_section/es_dashboard.dart';
 import 'package:ibcportal/pages/employee_section/leaverequest.dart';
 import 'package:ibcportal/pages/employee_section/plsummary.dart';
 import 'package:ibcportal/pages/employee_section/halfday_request.dart';
+import 'package:ibcportal/pages/employee_section/NhfhDuty.dart';
+import 'package:ibcportal/pages/employee_section/nhfhAvail.dart';
 import 'package:ibcportal/pages/broadcast.dart';
+import 'package:ibcportal/pages/employee_section/Tour_request.dart';
 
 void main() => runApp(MyApp());
 
@@ -48,6 +51,9 @@ class MyApp extends StatelessWidget {
         '/plsummary' : (context) => Plsummary(),
         '/halfdayrequest' : (context) => HalfDayRequest(),
         '/offdayduty_request' : (context) => OffdayDutyRequest(),
+        '/tour_request' : (context) => TourRequest(),
+        '/nhfh_duty' : (context) => NhfhDuty(),
+        '/nhfh_avail' : (context) => NhfhAvail(),
         '/broadcast' : (context) => BroadcastPage(),
       },
       theme: ThemeData(

@@ -148,23 +148,35 @@ class _OffdayDutyRequestState extends State<OffdayDutyRequest> {
   }
 
   void _formSubmit() async {
+    setState(() {
+      loader = true;
+    });
     final FormState form = _formkey.currentState;
     form.save();
     List <dynamic> userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"/user/half_day-requests";
+    String url = global.baseUrl+"user-off-day-duty-request";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
 
     String json = '{"date":"'+ dutyDate +'","requirement":"'+ Requirment +'","wod":"'+ wod.toString() +'"}';
+    print(json);
     http.Response response = await http.post(url, headers: headers, body: json);
     int statusCode = response.statusCode;
+    print(statusCode);
+    print(jsonDecode(response.body));
     if(statusCode == 200){
       setState(() {
-        loader = true;
+        loader = false;
       });
       _successDialog();
     } else if(statusCode == 500){
+      setState(() {
+        loader = false;
+      });
       _errorDialog();
     } else if(statusCode == 404){
+      setState(() {
+        loader = false;
+      });
       _logoutDialog();
     }
   }

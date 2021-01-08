@@ -7,28 +7,33 @@ import 'package:ibcportal/common/global.dart' as global;
 import 'package:http/http.dart' as http;
 import 'dart:async';
 
-class HalfDayRequest extends StatefulWidget {
+class TourRequest extends StatefulWidget {
   @override
-  _HalfDayRequestState createState() => _HalfDayRequestState();
+  _TourRequestState createState() => _TourRequestState();
 }
 
-class _HalfDayRequestState extends State<HalfDayRequest> {
+class _TourRequestState extends State<TourRequest> {
   final dbhelper = Databasehelper.instance;
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
   bool loader = false;
-  String leaveFrom;
-  String ReasonLeave;
-  TextEditingController _leaveFrom;
+  String tourFrom;
+  String tourTo;
+  String _location;
+  String _requirement;
+  String _remark;
+  TextEditingController _tourFrom;
+  TextEditingController _tourTo;
 
 
   @override
   void initState() {
     super.initState();
-    _leaveFrom = TextEditingController();
+    _tourFrom = TextEditingController();
+    _tourTo = TextEditingController();
   }
 
 
-    Future<void> _successDialog() async {
+  Future<void> _successDialog() async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -38,7 +43,7 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your half day request submitted successfully.'),
+                Text('Your tour request submitted successfully.'),
               ],
             ),
           ),
@@ -47,8 +52,6 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
               color: Colors.greenAccent,
               child: Text('Ok'),
               onPressed: () => {
-                //_formkey.currentState.reset(),
-                //Navigator.popAndPushNamed(context, '/esdashboard')
                 Navigator.pop(context),
                 Navigator.pop(context)
               },
@@ -70,7 +73,7 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('Your half day request not submitted.\n try again.'),
+                Text('Your tour request not submitted.\n try again.'),
               ],
             ),
           ),
@@ -79,8 +82,6 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
               color: Colors.redAccent,
               child: Text('Ok'),
               onPressed: () => {
-                //_formkey.currentState.reset(),
-                //Navigator.popAndPushNamed(context, '/esdashboard')
                 Navigator.pop(context),
               },
             ),
@@ -125,13 +126,14 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
     form.save();
 
     List <dynamic> userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"user-half-day-request";
+    String url = global.baseUrl+"user-tour-request";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
 
-    String json = '{"date":"'+ leaveFrom +'","reason":"'+ ReasonLeave +'"}';
+    String json = '{"fromDate":"'+ tourFrom +'","toDate":"'+ tourTo +'","location":"'+ _location +'","requirement":"'+ _requirement +'","remark":"'+ _remark +'"}';
+
     http.Response response = await http.post(url, headers: headers, body: json);
     int statusCode = response.statusCode;
-
+    print(statusCode);
     if(statusCode == 200){
       setState(() {
         loader = true;
@@ -144,63 +146,10 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
     }
   }
 
-  Widget _buildLeaveFrom(){
-    return TextFormField(
-      controller: _leaveFrom,
-      readOnly: true,
-      decoration: InputDecoration(
-          labelText: 'Half Day Leave Date',
-          suffixIcon: GestureDetector(
-            onTap: ()=>{
-              showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2020, 11),
-                lastDate: DateTime(2021,12),
-              ).then((selectedDate) {
-                if(selectedDate!=null){
-                  final DateTime now = selectedDate;
-                  final DateFormat formatter = DateFormat('dd/MM/yyyy');
-                  final String formatted = formatter.format(now);
-                  _leaveFrom.text = formatted;
-                }
-              })
-            },
-            child: Icon(Icons.calendar_today),
-          )),
-      onSaved: (String value){
-        leaveFrom = value;
-      },
-      validator: (String value){
-        if(value.isEmpty){
-          return 'Select date';
-        }
-      },
-    );
-  }
-
-
-  Widget _buildReason(){
-    return TextFormField(
-      decoration: InputDecoration(
-        labelText: 'Reason for Half Day',
-      ),
-      keyboardType: TextInputType.multiline,
-      onSaved: (String value){
-        ReasonLeave = value;
-      },
-      validator: (String value){
-        if(value.isEmpty){
-          return 'Give reason for Half day';
-        }
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppbarPage('Half Day Leave'),
+        appBar: AppbarPage('Tour Request'),
         body: loader ? Container(
           child: Center(
             child: Column(
@@ -256,7 +205,7 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
                     Container(
                       child: Row(
                         children: <Widget>[
-                          Text('Half Day Leave',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[900]),),
+                          Text('Tour Request',style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue[900]),),
                         ],
                       ),
                     ),
@@ -275,9 +224,114 @@ class _HalfDayRequestState extends State<HalfDayRequest> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(height: 10),
-                          _buildLeaveFrom(),
-                          _buildReason(),
-                          SizedBox(height: 10),
+
+                          TextFormField(
+                            controller: _tourFrom,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                labelText: 'Tour From Date',
+                                suffixIcon: GestureDetector(
+                                  onTap: ()=>{
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2020, 11),
+                                      lastDate: DateTime(2021,12),
+                                    ).then((selectedDate) {
+                                      if(selectedDate!=null){
+                                        final DateTime now = selectedDate;
+                                        final DateFormat formatter = DateFormat('dd/MM/yyyy');
+                                        final String formatted = formatter.format(now);
+                                        _tourFrom.text = formatted;
+                                      }
+                                    })
+                                  },
+                                  child: Icon(Icons.calendar_today),
+                                )),
+                            onSaved: (String value){
+                              tourFrom = value;
+                            },
+                            validator: (String value){
+                              if(value.isEmpty){
+                                return 'Select tour from date';
+                              }
+                            },
+                          ),
+
+                          TextFormField(
+                            controller: _tourTo,
+                            readOnly: true,
+                            decoration: InputDecoration(
+                                labelText: 'Tour To Date',
+                                suffixIcon: GestureDetector(
+                                  onTap: ()=>{
+                                    showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2020, 11),
+                                      lastDate: DateTime(2021,12),
+                                    ).then((selectedDate) {
+                                      if(selectedDate!=null){
+                                        final DateTime now = selectedDate;
+                                        final DateFormat formatter = DateFormat('dd/MM/yyyy');
+                                        final String formatted = formatter.format(now);
+                                        _tourTo.text = formatted;
+                                      }
+                                    })
+                                  },
+                                  child: Icon(Icons.calendar_today),
+                                )),
+                            onSaved: (String value){
+                              tourTo = value;
+                            },
+                            validator: (String value){
+                              if(value.isEmpty){
+                                return 'Select tour to date';
+                              }
+                            },
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Location',
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            onSaved: (String value){
+                              _location = value;
+                            },
+                            validator: (String value){
+                              if(value.isEmpty){
+                                return 'Enter location.';
+                              }
+                            },
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Requirement',
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            onSaved: (String value){
+                              _requirement = value;
+                            },
+                            validator: (String value){
+                              if(value.isEmpty){
+                                return 'Give requirement.';
+                              }
+                            },
+                          ),
+
+                          TextFormField(
+                            decoration: InputDecoration(
+                              labelText: 'Remark',
+                            ),
+                            keyboardType: TextInputType.multiline,
+                            onSaved: (String value){
+                              _remark = value;
+                            },
+                          ),
+
+                          SizedBox(height: 50),
                           RaisedButton(
                               color: Colors.lightGreen,
                               splashColor: Colors.red,
