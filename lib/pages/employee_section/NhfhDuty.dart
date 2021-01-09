@@ -24,22 +24,17 @@ class _NhfhDutyState extends State<NhfhDuty> {
   TextEditingController _requirement;
   bool _btnStatus = false;
   String punchTime = '';
-  // List _nhfh;
-  List _nhfh = [{"name": "26/01/2020 (Republic Day)","id": "26/01/2020"},
-                {"name": "02/10/2020 (Gandhi Jayanti)","id": "02/10/2020"},
-                {"name": "25/10/2020 (Vijayadashmi)","id": "25/10/2020"},
-                {"name": "14/11/2020 (Diwali)","id": "14/11/2020"},
-                {"name": "15/11/2020 (Govardhan Puja)","id": "15/11/2020"}];
+  List _nhfh;
 
   @override
   void initState() {
     super.initState();
-   // _nhfhList();
+    _nhfhList();
     _requirement = TextEditingController();
   }
 
   void _nhfhList() async {
-    print('fucntion called');
+    print('asf');
     List <dynamic> userdetail = await dbhelper.get(1);
     String url = global.baseUrl+"nhfhs";
     print(url);
@@ -269,21 +264,21 @@ class _NhfhDutyState extends State<NhfhDuty> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date:'),
-                              DropdownButton(
-                                items: _nhfh.map((item){
-                                  return DropdownMenuItem(
-                                    child: Text(item['name']),
-                                    value: item['id'].toString(),
-                                  );
-                                }).toList(),
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    dropdownValue = newVal;
-                                    _checkAttendance();
-                                  });
-                                },
-                                value: dropdownValue ?? null,
-                              )
+                              // DropdownButton(
+                              //   items: _nhfh.map((item){
+                              //     return DropdownMenuItem(
+                              //       child: Text(item['name']),
+                              //       value: item['id'].toString(),
+                              //     );
+                              //   }).toList(),
+                              //   onChanged: (newVal) {
+                              //     setState(() {
+                              //       dropdownValue = newVal;
+                              //       _checkAttendance();
+                              //     });
+                              //   },
+                              //   value: dropdownValue ?? null,
+                              // )
                             ],
                           ),
                           _btnStatus ? Text(punchTime,style: TextStyle(color: Colors.redAccent),) : Text(punchTime,style: TextStyle(color: Colors.redAccent,),),

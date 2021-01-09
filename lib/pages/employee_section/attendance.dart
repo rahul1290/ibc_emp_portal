@@ -31,7 +31,7 @@ class _AttendanceState extends State<Attendance> {
   bool loader = true;
   bool tableloader = true;
   var jsonTable;
-  String DefaultDept = '1';
+  String DefaultDept;
   String Defaultuser;
   String Defaultmonth;
   String Defaultyear;
@@ -71,14 +71,13 @@ class _AttendanceState extends State<Attendance> {
   void userDepartment() async{
     List <dynamic> userdetail = await dbhelper.get(1);
     DefaultDept = userdetail[0]['department'];
-    String url = global.baseUrl+"/user-department";
+    String url = global.baseUrl+"user-department";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
     String body = response.body;
     setState(() {
       Departments = jsonDecode(response.body);
-      //print(Departments[0]['DeptName']);
     });
     userLists();
   }
@@ -127,9 +126,8 @@ class _AttendanceState extends State<Attendance> {
     if(statusCode == 200) {
       setState(() {
         jsonTable = jsonDecode(response.body);
-        //tableloader = false;
+        tableloader = false;
       });
-      userDepartment();
     }
   }
 
@@ -142,9 +140,7 @@ class _AttendanceState extends State<Attendance> {
     setState(() {
       Defaultmonth = body[0]['month'].toString();
       Defaultyear = body[0]['year'].toString();
-      print(Defaultyear);
     });
-    userAttendance();
   }
 
   void logout() async {
@@ -158,8 +154,9 @@ class _AttendanceState extends State<Attendance> {
   void initState(){
     super.initState();
     getMonthYear();
-    //userLists();
-
+    userDepartment();
+    userLists();
+    userAttendance();
   }
 
   Widget build(BuildContext context) {
@@ -196,17 +193,15 @@ class _AttendanceState extends State<Attendance> {
                                 children: <Widget>[
                                   Text('Department', style: TextStyle(fontWeight: FontWeight.bold),),
                                   DropdownButton(
-                                    items: Departments.map((item1){
-                                      print(item1['DeptName']);
+                                    items: [{'id':'1','DeptName':'IT'},{'id':'2','DeptName':'IT2'}].map((item){
                                       return DropdownMenuItem(
-                                        value: item1['id'].toString(),
-                                        child: Text(item1['DeptName'].toString()),
-
+                                        child: Text(item['DeptName']),
+                                        value: item['id'].toString(),
                                       );
                                     }).toList(),
-                                    onChanged: (newVal1) {
+                                    onChanged: (newVal) {
                                       setState(() {
-                                        DefaultDept = newVal1.toString();
+                                        DefaultDept = newVal;
                                       });
                                     },
                                     value: DefaultDept,

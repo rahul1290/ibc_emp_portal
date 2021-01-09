@@ -24,11 +24,6 @@ class _NhfhAvailState extends State<NhfhAvail> {
   bool _btnStatus = false;
   String punchTime = '';
   List _nhfh;
-  // List _nhfh = [{"name": "26/01/2020 (Republic Day)","id": "26/01/2020"},
-  //   {"name": "02/10/2020 (Gandhi Jayanti)","id": "02/10/2020"},
-  //   {"name": "25/10/2020 (Vijayadashmi)","id": "25/10/2020"},
-  //   {"name": "14/11/2020 (Diwali)","id": "14/11/2020"},
-  //   {"name": "15/11/2020 (Govardhan Puja)","id": "15/11/2020"}];
 
   @override
   void initState() {
@@ -41,10 +36,10 @@ class _NhfhAvailState extends State<NhfhAvail> {
     print('fucntion called');
     List <dynamic> userdetail = await dbhelper.get(1);
     String url = global.baseUrl+"nhfhs";
-    print(url);
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
+    print(statusCode);
     if(statusCode == 200){
       _nhfh = jsonDecode(response.body);
     } else if(statusCode == 500){
@@ -246,20 +241,20 @@ class _NhfhAvailState extends State<NhfhAvail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date:'),
-                              DropdownButtonFormField(
-                                items: _nhfh.map((item){
-                                  return DropdownMenuItem(
-                                    child: Text(item['name']),
-                                    value: item['id'].toString(),
-                                  );
-                                }).toList(),
-                                onChanged: (newVal) {
-                                  setState(() {
-                                    dropdownValue = newVal;
-                                  });
-                                },
-                                value: dropdownValue,
-                              )
+                              // DropdownButtonFormField(
+                              //   items: _nhfh.map((item){
+                              //     return DropdownMenuItem(
+                              //       child: Text(item['name']),
+                              //       value: item['id'].toString(),
+                              //     );
+                              //   }).toList(),
+                              //   onChanged: (newVal) {
+                              //     setState(() {
+                              //       dropdownValue = newVal;
+                              //     });
+                              //   },
+                              //   value: dropdownValue,
+                              // ),
                             ],
                           ),
                           TextFormField(
