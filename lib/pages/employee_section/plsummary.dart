@@ -29,7 +29,7 @@ class _PlsummaryState extends State<Plsummary> {
   
   void userDepartment() async{
     List <dynamic> userdetail = await dbhelper.get(1);
-    DefaultDept = userdetail[0]['department'];
+    DefaultDept = userdetail[0]['id'].toString();
     String url = global.baseUrl+"/Authctrl/user_department";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
@@ -145,7 +145,7 @@ class _PlsummaryState extends State<Plsummary> {
                               DropdownButton(
                                 items: Departments.map((item){
                                   return DropdownMenuItem(
-                                    child: Text(item['dept_name'],maxLines: 2,),
+                                    child: Text(item['DeptName'],maxLines: 2,),
                                     value: item['id'].toString(),
                                   );
                                 }).toList(),

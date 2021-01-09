@@ -11,6 +11,7 @@ import 'package:ibcportal/common/drawerPage.dart';
 import 'package:ibcportal/common/appbarPage.dart';
 //import 'package:ibcportal/common/bottomnavigation.dart';
 import 'package:ibcportal/pages/bottomNavigation/Birthday.dart';
+
 class Dashbaord extends StatefulWidget {
   @override
   _DashbaordState createState() => _DashbaordState();
@@ -18,12 +19,12 @@ class Dashbaord extends StatefulWidget {
 
 class _DashbaordState extends State<Dashbaord> {
   final dbhelper = Databasehelper.instance;
+
   @override
   void initState(){
     super.initState();
     _userDetail();
   }
-
   
   Future<bool> _onWillPop(){
     return showDialog(

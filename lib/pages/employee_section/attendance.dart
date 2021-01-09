@@ -26,7 +26,6 @@ class _AttendanceData {
 }
 
 class _AttendanceState extends State<Attendance> {
-
   final dbhelper = Databasehelper.instance;
   bool loader = true;
   bool tableloader = true;
@@ -70,7 +69,6 @@ class _AttendanceState extends State<Attendance> {
 
   void userDepartment() async{
     List <dynamic> userdetail = await dbhelper.get(1);
-    DefaultDept = userdetail[0]['department'];
     String url = global.baseUrl+"user-department";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
@@ -78,6 +76,7 @@ class _AttendanceState extends State<Attendance> {
     String body = response.body;
     setState(() {
       Departments = jsonDecode(response.body);
+      DefaultDept = userdetail[0]['id'].toString();
     });
     userLists();
   }
@@ -94,6 +93,19 @@ class _AttendanceState extends State<Attendance> {
       Users = jsonDecode(response.body);
       loader = false;
     });
+    fetchAttendance();
+  }
+
+  void deptuser(String dept) async{
+   List <dynamic> userdetail = await dbhelper.get(1);
+   String url = global.baseUrl+'dept-users';
+   Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
+   String json = '{"dept":"'+ dept +'"}';
+   http.Response response = await http.post(url, headers: headers,body: json);
+   int statusCode = response.statusCode;
+   if(statusCode == 200){
+     print(jsonDecode(response.body));
+   }
   }
 
   void fetchAttendance() async {
@@ -101,11 +113,13 @@ class _AttendanceState extends State<Attendance> {
       tableloader = true;
     });
     List <dynamic> Userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"/Authctrl/attendance";
+    String url = global.baseUrl+"user-attendance";
+    print(url);
     Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
-    String json = '{"department": "'+DefaultDept+'", "employee": "'+ Defaultuser +'","month":"'+Defaultmonth+'","year":"'+Defaultyear+'"}';
+    String json = '{"empCode": "'+ Defaultuser +'","month":"'+Defaultmonth+'","year":"'+Defaultyear+'"}';
     http.Response response = await http.post(url,headers: headers,body: json);
     int statusCode = response.statusCode;
+    print(statusCode);
     setState(() {
       if(statusCode == 200) {
         jsonTable = jsonDecode(response.body);
@@ -117,19 +131,19 @@ class _AttendanceState extends State<Attendance> {
     });
   }
 
-  void userAttendance() async {
-    List <dynamic> Userdetail = await dbhelper.get(1);
-    String url = global.baseUrl+"/user-attendance";
-    Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
-    http.Response response = await http.get(url,headers: headers);
-    int statusCode = response.statusCode;
-    if(statusCode == 200) {
-      setState(() {
-        jsonTable = jsonDecode(response.body);
-        tableloader = false;
-      });
-    }
-  }
+  // void userAttendance() async {
+  //   List <dynamic> Userdetail = await dbhelper.get(1);
+  //   String url = global.baseUrl+"/user-attendance";
+  //   Map<String, String> headers = {"Content-type": "application/json","ibckey":Userdetail[0]['key']};
+  //   http.Response response = await http.get(url,headers: headers);
+  //   int statusCode = response.statusCode;
+  //   if(statusCode == 200) {
+  //     setState(() {
+  //       jsonTable = jsonDecode(response.body);
+  //       tableloader = false;
+  //     });
+  //   }
+  // }
 
   void getMonthYear() async {
     List <dynamic> Userdetail = await dbhelper.get(1);
@@ -155,8 +169,6 @@ class _AttendanceState extends State<Attendance> {
     super.initState();
     getMonthYear();
     userDepartment();
-    userLists();
-    userAttendance();
   }
 
   Widget build(BuildContext context) {
@@ -193,7 +205,7 @@ class _AttendanceState extends State<Attendance> {
                                 children: <Widget>[
                                   Text('Department', style: TextStyle(fontWeight: FontWeight.bold),),
                                   DropdownButton(
-                                    items: [{'id':'1','DeptName':'IT'},{'id':'2','DeptName':'IT2'}].map((item){
+                                    items: Departments.map((item){
                                       return DropdownMenuItem(
                                         child: Text(item['DeptName']),
                                         value: item['id'].toString(),
@@ -202,6 +214,7 @@ class _AttendanceState extends State<Attendance> {
                                     onChanged: (newVal) {
                                       setState(() {
                                         DefaultDept = newVal;
+                                        deptuser(Departments[int.parse(newVal) -1]['DeptName']);
                                       });
                                     },
                                     value: DefaultDept,

@@ -12,7 +12,7 @@ class _Es_dashboardState extends State<Es_dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppbarPage('Employee Section'),
-        drawer: DrawerPage(),
+        //drawer: DrawerPage(),
         body: Container(
           padding: EdgeInsets.all(9.0),
           child: GridView.count(
@@ -27,7 +27,7 @@ class _Es_dashboardState extends State<Es_dashboard> {
               Items(title: 'Cancel\nRequest',icon: Icons.report,warna: Colors.red,route: 'attendance'),
               Items(title: 'NH/FH\nDuty',icon: Icons.desktop_windows,warna: Colors.red,route: '/nhfh_duty'),
               Items(title: 'NH/FH\nAvail',icon: Icons.desktop_windows,warna: Colors.red,route: '/nhfh_avail'),
-              Items(title: 'All\nReport',icon: Icons.timeline,warna: Colors.orange,route: '/hrpolicies'),
+              Items(title: 'All\nReport',icon: Icons.timeline,warna: Colors.orange,route: '/all_report'),
             ],
           ),
         )

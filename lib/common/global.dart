@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 //print('dDay'+ dDay);
 
 
-//String baseUrl = "http://192.168.25.184:82/empMapp/EmpApp/";
-String baseUrl = "http://emp2.ibc24.in/mApp/api/";
+String baseUrl = "http://192.168.25.184:82/empMapp/EmpApp/";
+//String baseUrl = "http://emp2.ibc24.in/mApp/api/";
 String appPath = "http://192.168.25.184:82/off/";
 
 String uname = "";

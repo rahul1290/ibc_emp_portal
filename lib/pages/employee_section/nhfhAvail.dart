@@ -23,7 +23,7 @@ class _NhfhAvailState extends State<NhfhAvail> {
   TextEditingController _requirement;
   bool _btnStatus = false;
   String punchTime = '';
-  List _nhfh;
+  List _nhfh = [{'id':1,'name':'name1'},{'id':1,'name':'name1'}];
 
   @override
   void initState() {
@@ -33,18 +33,13 @@ class _NhfhAvailState extends State<NhfhAvail> {
   }
 
   void _nhfhList() async {
-    print('fucntion called');
+    print('_nhfhList function called');
     List <dynamic> userdetail = await dbhelper.get(1);
     String url = global.baseUrl+"nhfhs";
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
     print(statusCode);
-    if(statusCode == 200){
-      _nhfh = jsonDecode(response.body);
-    } else if(statusCode == 500){
-
-    }
   }
 
   Future<void> _successDialog() async {
@@ -241,20 +236,20 @@ class _NhfhAvailState extends State<NhfhAvail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date:'),
-                              // DropdownButtonFormField(
-                              //   items: _nhfh.map((item){
-                              //     return DropdownMenuItem(
-                              //       child: Text(item['name']),
-                              //       value: item['id'].toString(),
-                              //     );
-                              //   }).toList(),
-                              //   onChanged: (newVal) {
-                              //     setState(() {
-                              //       dropdownValue = newVal;
-                              //     });
-                              //   },
-                              //   value: dropdownValue,
-                              // ),
+                              DropdownButtonFormField(
+                                items: _nhfh.map((item){
+                                  return DropdownMenuItem(
+                                    child: Text(item['name']),
+                                    value: item['id'].toString(),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    dropdownValue = newVal;
+                                  });
+                                },
+                                value: dropdownValue,
+                              ),
                             ],
                           ),
                           TextFormField(
@@ -276,7 +271,7 @@ class _NhfhAvailState extends State<NhfhAvail> {
                           RaisedButton(
                               color: Colors.lightGreen,
                               splashColor: Colors.red,
-                              child: Text('Send',style: TextStyle(color: Colors.white, fontSize: 16),),
+                              child: Text('Submit',style: TextStyle(color: Colors.white, fontSize: 16),),
                               onPressed:(){
                                 if(_formkey.currentState.validate()){
                                   _formSubmit();

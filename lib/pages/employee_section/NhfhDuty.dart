@@ -24,7 +24,7 @@ class _NhfhDutyState extends State<NhfhDuty> {
   TextEditingController _requirement;
   bool _btnStatus = false;
   String punchTime = '';
-  List _nhfh;
+  List _nhfh = List();
 
   @override
   void initState() {
@@ -34,7 +34,6 @@ class _NhfhDutyState extends State<NhfhDuty> {
   }
 
   void _nhfhList() async {
-    print('asf');
     List <dynamic> userdetail = await dbhelper.get(1);
     String url = global.baseUrl+"nhfhs";
     print(url);
@@ -43,6 +42,8 @@ class _NhfhDutyState extends State<NhfhDuty> {
     int statusCode = response.statusCode;
     if(statusCode == 200){
       _nhfh = jsonDecode(response.body);
+      //dropdownValue = _nhfh[0]['id'].toString();
+      //print(dropdownValue);
     } else if(statusCode == 500){
 
     }
@@ -264,21 +265,21 @@ class _NhfhDutyState extends State<NhfhDuty> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date:'),
-                              // DropdownButton(
-                              //   items: _nhfh.map((item){
-                              //     return DropdownMenuItem(
-                              //       child: Text(item['name']),
-                              //       value: item['id'].toString(),
-                              //     );
-                              //   }).toList(),
-                              //   onChanged: (newVal) {
-                              //     setState(() {
-                              //       dropdownValue = newVal;
-                              //       _checkAttendance();
-                              //     });
-                              //   },
-                              //   value: dropdownValue ?? null,
-                              // )
+                              DropdownButton(
+                                items: _nhfh.map((item){
+                                  return DropdownMenuItem(
+                                    child: Text(item['name']),
+                                    value: item['id'].toString(),
+                                  );
+                                }).toList(),
+                                onChanged: (newVal) {
+                                  setState(() {
+                                    dropdownValue = newVal;
+                                    _checkAttendance();
+                                  });
+                                },
+                                value: dropdownValue ?? null,
+                              )
                             ],
                           ),
                           _btnStatus ? Text(punchTime,style: TextStyle(color: Colors.redAccent),) : Text(punchTime,style: TextStyle(color: Colors.redAccent,),),
@@ -300,7 +301,7 @@ class _NhfhDutyState extends State<NhfhDuty> {
                           RaisedButton(
                               color: Colors.lightGreen,
                               splashColor: Colors.red,
-                              child: Text('Send',style: TextStyle(color: Colors.white, fontSize: 16),),
+                              child: Text('Submit',style: TextStyle(color: Colors.white, fontSize: 16),),
                               onPressed: _btnStatus ? (){
                                 if(_formkey.currentState.validate()){
                                   _formSubmit();

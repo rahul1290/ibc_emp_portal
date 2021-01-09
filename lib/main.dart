@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:ibcportal/dbhelper.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:http/http.dart' as http;
+import 'package:ibcportal/pages/employee_section/AllReport.dart';
 import 'package:ibcportal/pages/employee_section/offdayduty_request.dart';
 import 'package:launch_review/launch_review.dart';
 
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         '/tour_request' : (context) => TourRequest(),
         '/nhfh_duty' : (context) => NhfhDuty(),
         '/nhfh_avail' : (context) => NhfhAvail(),
+        '/all_report' : (context) => AllReport(),
         '/broadcast' : (context) => BroadcastPage(),
       },
       theme: ThemeData(
