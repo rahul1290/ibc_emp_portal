@@ -23,17 +23,17 @@ class _NhfhAvailState extends State<NhfhAvail> {
   TextEditingController _requirement;
   bool _btnStatus = false;
   String punchTime = '';
-  // List _nhfh;
-  List _nhfh = [{"name": "26/01/2020 (Republic Day)","id": "26/01/2020"},
-    {"name": "02/10/2020 (Gandhi Jayanti)","id": "02/10/2020"},
-    {"name": "25/10/2020 (Vijayadashmi)","id": "25/10/2020"},
-    {"name": "14/11/2020 (Diwali)","id": "14/11/2020"},
-    {"name": "15/11/2020 (Govardhan Puja)","id": "15/11/2020"}];
+  List _nhfh;
+  // List _nhfh = [{"name": "26/01/2020 (Republic Day)","id": "26/01/2020"},
+  //   {"name": "02/10/2020 (Gandhi Jayanti)","id": "02/10/2020"},
+  //   {"name": "25/10/2020 (Vijayadashmi)","id": "25/10/2020"},
+  //   {"name": "14/11/2020 (Diwali)","id": "14/11/2020"},
+  //   {"name": "15/11/2020 (Govardhan Puja)","id": "15/11/2020"}];
 
   @override
   void initState() {
     super.initState();
-    // _nhfhList();
+     _nhfhList();
     _requirement = TextEditingController();
   }
 
@@ -246,7 +246,7 @@ class _NhfhAvailState extends State<NhfhAvail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text('Date:'),
-                              DropdownButton(
+                              DropdownButtonFormField(
                                 items: _nhfh.map((item){
                                   return DropdownMenuItem(
                                     child: Text(item['name']),
@@ -258,7 +258,7 @@ class _NhfhAvailState extends State<NhfhAvail> {
                                     dropdownValue = newVal;
                                   });
                                 },
-                                value: dropdownValue ?? null,
+                                value: dropdownValue,
                               )
                             ],
                           ),
@@ -266,6 +266,7 @@ class _NhfhAvailState extends State<NhfhAvail> {
                             controller: _requirement,
                             decoration: InputDecoration(
                               labelText: 'Reason',
+
                             ),
                             onSaved: (String value){
                               requirement = value;

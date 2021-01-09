@@ -28,15 +28,15 @@ class _AttendanceData {
 class _AttendanceState extends State<Attendance> {
 
   final dbhelper = Databasehelper.instance;
+  bool loader = true;
+  bool tableloader = true;
   var jsonTable;
-  String DefaultDept;
+  String DefaultDept = '1';
   String Defaultuser;
   String Defaultmonth;
   String Defaultyear;
   List Users = List();
-  List Departments = [
-    {'id':1,'dept_name':'IT'},
-    ];
+  List Departments  = List();
   List Month = [{'id':1,'name': 'Jan'},
                 {'id':2,'name': 'Feb'},
                 {'id':3,'name': 'Mar'},
@@ -75,11 +75,12 @@ class _AttendanceState extends State<Attendance> {
     Map<String, String> headers = {"Content-type": "application/json","ibckey":userdetail[0]['key']};
     http.Response response = await http.get(url, headers: headers);
     int statusCode = response.statusCode;
-    print(statusCode);
     String body = response.body;
     setState(() {
       Departments = jsonDecode(response.body);
+      //print(Departments[0]['DeptName']);
     });
+    userLists();
   }
 
   void userLists() async{
@@ -92,6 +93,7 @@ class _AttendanceState extends State<Attendance> {
     String body = response.body;
     setState(() {
       Users = jsonDecode(response.body);
+      loader = false;
     });
   }
 
@@ -125,9 +127,9 @@ class _AttendanceState extends State<Attendance> {
     if(statusCode == 200) {
       setState(() {
         jsonTable = jsonDecode(response.body);
-        loader = false;
-        tableloader = false;
+        //tableloader = false;
       });
+      userDepartment();
     }
   }
 
@@ -142,6 +144,7 @@ class _AttendanceState extends State<Attendance> {
       Defaultyear = body[0]['year'].toString();
       print(Defaultyear);
     });
+    userAttendance();
   }
 
   void logout() async {
@@ -149,16 +152,14 @@ class _AttendanceState extends State<Attendance> {
     Navigator.pushNamed(context, '/login');
   }
 
-  bool loader = true;
-  bool tableloader = true;
+
 
   @override
   void initState(){
     super.initState();
     getMonthYear();
-    userAttendance();
-    userDepartment();
-    userLists();
+    //userLists();
+
   }
 
   Widget build(BuildContext context) {
@@ -195,15 +196,17 @@ class _AttendanceState extends State<Attendance> {
                                 children: <Widget>[
                                   Text('Department', style: TextStyle(fontWeight: FontWeight.bold),),
                                   DropdownButton(
-                                    items: Departments.map((item){
+                                    items: Departments.map((item1){
+                                      print(item1['DeptName']);
                                       return DropdownMenuItem(
-                                        child: Text(item['dept_name']),
-                                        value: item['id'].toString(),
+                                        value: item1['id'].toString(),
+                                        child: Text(item1['DeptName'].toString()),
+
                                       );
                                     }).toList(),
-                                    onChanged: (newVal) {
+                                    onChanged: (newVal1) {
                                       setState(() {
-                                        DefaultDept = newVal;
+                                        DefaultDept = newVal1.toString();
                                       });
                                     },
                                     value: DefaultDept,

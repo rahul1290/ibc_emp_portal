@@ -295,7 +295,7 @@ class _LeveRequestState extends State<LeveRequest> {
                         child: Form(
                           key: _formkey,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            //mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               SizedBox(height: 10),
@@ -395,13 +395,14 @@ class _LeveRequestState extends State<LeveRequest> {
                                   ],
                                 ),
                               ),
-                              RaisedButton(
+                              Center(child:RaisedButton(
                                   child: Text('Submit',style: TextStyle(color: Colors.blue, fontSize: 16),),
                                   onPressed: (){
                                     if(_formkey.currentState.validate()){
                                       _formSubmit();
                                     }
                                   }),
+                                ),
                             ],
                           ),
                         ),
